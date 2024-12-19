@@ -1,0 +1,17 @@
+/* src/styles/App.css */
+.container {
+    margin-top: 50px;
+  }
+  
+  h1 {
+    color: #2c3e50;
+  }
+  
+  .card-title {
+    color: #2980b9;
+  }
+  
+  .card-text {
+    color: #7f8c8d;
+  }
+
