@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import '../App.css';
-
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,10 +27,10 @@ const UsersPage = () => {
     setSearchQuery(event.target.value);
   };
 
-  // Filter users based on search query
+  // Filter users based on search query (name or email)
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.id.toString().includes(searchQuery)
+    user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (loading) return <div className="text-center mt-5">Loading...</div>;
@@ -46,7 +45,7 @@ const UsersPage = () => {
         <Col>
           <FormControl
             type="text"
-            placeholder="Search by name or ID"
+            placeholder="Search by user name or email"
             value={searchQuery}
             onChange={handleSearchChange}
           />
@@ -59,9 +58,9 @@ const UsersPage = () => {
             <Card className="mb-4">
               <Card.Body>
                 <Card.Title>{user.name}</Card.Title>
-                <Card.Text>Email: {user.email}</Card.Text>
-                <Card.Text>Username: {user.username}</Card.Text>
-                <Card.Text>Phone: {user.phone}</Card.Text>
+                <Card.Text>{user.email}</Card.Text>
+                <Card.Text>{user.phone}</Card.Text>
+                <Card.Text>{user.company.name}</Card.Text>
               </Card.Body>
             </Card>
           </Col>

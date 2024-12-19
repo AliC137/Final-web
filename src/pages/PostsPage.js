@@ -1,37 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, FormControl } from 'react-bootstrap';
 import axios from 'axios';
-import '../App.css';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPosts = async () => {
       try {
-        const postsResponse = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        setPosts(postsResponse.data);
+        const response = await axios.get('http://localhost:3000/posts');
+        setPosts(response.data);
       } catch (err) {
-        setError('Failed to fetch data');
+        setError('Failed to fetch posts');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchPosts();
   }, []);
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  // Filter posts based on search query
-  const filteredPosts = posts.filter(post =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.body.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   if (loading) return <div className="text-center mt-5">Loading...</div>;
   if (error) return <div className="text-center mt-5">{error}</div>;
@@ -39,25 +28,12 @@ const PostsPage = () => {
   return (
     <Container>
       <h1 className="my-4 text-center">Posts</h1>
-
-      {/* Search input for filtering */}
-      <Row className="mb-4">
-        <Col>
-          <FormControl
-            type="text"
-            placeholder="Search by title or body"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-        </Col>
-      </Row>
-
       <Row>
-        {filteredPosts.map(post => (
-          <Col key={post.id} md={4}>
-            <Card className="mb-4">
+        {posts.map(post => (
+          <Col md={4} key={post.postId} className="mb-4">
+            <Card>
               <Card.Body>
-                <Card.Title>{post.title}</Card.Title>
+                <Card.Title>{post.name}</Card.Title>
                 <Card.Text>{post.body}</Card.Text>
               </Card.Body>
             </Card>
